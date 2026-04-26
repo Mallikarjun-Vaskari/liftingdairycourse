@@ -1,23 +1,29 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import { format, parseISO } from 'date-fns';
+import { Calendar } from '@/components/ui/calendar';
 
-export default function DatePicker({ value }: { value: string }) {
+export default function DatePicker() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  const dateParam = searchParams.get('date');
+  const value = dateParam ? parseISO(dateParam) : new Date();
+
+  function handleSelect(date: Date | undefined) {
+    if (!date) return;
     const params = new URLSearchParams(searchParams.toString());
-    params.set('date', e.target.value);
-    router.push(`/dashboard?${params.toString()}`);
+    params.set('date', format(date, 'yyyy-MM-dd'));
+    router.push(`?${params.toString()}`);
   }
 
   return (
-    <input
-      type="date"
-      value={value}
-      onChange={handleChange}
-      className="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+    <Calendar
+      mode="single"
+      selected={value}
+      onSelect={handleSelect}
+      className="rounded-xl border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm p-4"
     />
   );
 }

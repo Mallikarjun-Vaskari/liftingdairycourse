@@ -1,8 +1,10 @@
 import { auth } from '@clerk/nextjs/server';
 import { format } from 'date-fns';
+import Link from 'next/link';
 import DatePicker from './DatePicker';
 import { formatDateLabel } from '@/lib/utils';
 import { getWorkoutsForDate } from '@/lib/workouts';
+import { buttonVariants } from '@/components/ui/button';
 
 export default async function DashboardPage({
   searchParams,
@@ -21,29 +23,40 @@ export default async function DashboardPage({
   return (
     <div className="flex flex-col flex-1 bg-gray-50 dark:bg-zinc-950 min-h-full">
       <main className="mx-auto w-full max-w-6xl px-6 py-8">
+
+        {/* Top: Page title */}
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white mb-8">
+          Workout Dashboard
+        </h1>
+
         <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8 items-start">
 
           {/* Left: Calendar */}
-          <div className="md:sticky md:top-8">
+          <div className="md:sticky md:top-8 flex flex-col gap-4">
+            <h2 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white leading-7">
+              Select Date
+            </h2>
             <DatePicker />
           </div>
 
           {/* Right: Workouts for selected date */}
-          <div className="flex flex-col gap-6">
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Workout Dashboard
-              </h1>
-              <h2 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white mt-4">
-                Workouts
-              </h2>
-              <p className="text-sm text-gray-500 dark:text-zinc-400 mt-0.5">{dateLabel}</p>
-            </div>
+          <div className="flex flex-col gap-4">
+            <h2 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white leading-7">
+              Workouts for {dateLabel}
+            </h2>
 
             {workouts.length === 0 ? (
-              <p className="text-gray-500 dark:text-zinc-400 text-sm">
-                No workouts logged for this date.
-              </p>
+              <div className="flex flex-col gap-3">
+                <p className="text-gray-500 dark:text-zinc-400 text-sm">
+                  No workouts logged for this date.
+                </p>
+                <Link
+                  href={`/dashboard/workout/new?date=${dateParam}`}
+                  className={buttonVariants({ variant: 'default' }) + ' w-fit'}
+                >
+                  Log a new workout
+                </Link>
+              </div>
             ) : (
               workouts.map((workout) => (
                 <div

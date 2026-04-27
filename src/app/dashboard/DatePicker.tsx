@@ -8,8 +8,8 @@ export default function DatePicker() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const dateParam = searchParams.get('date');
-  const value = dateParam ? parseISO(dateParam) : new Date();
+  const dateParam = searchParams.get('date') ?? format(new Date(), 'yyyy-MM-dd');
+  const value = parseISO(dateParam);
 
   function handleSelect(date: Date | undefined) {
     if (!date) return;

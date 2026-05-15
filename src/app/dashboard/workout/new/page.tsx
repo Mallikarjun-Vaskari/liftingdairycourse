@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createWorkoutAction } from "./actions";
 
-export default function NewWorkoutPage() {
+function NewWorkoutForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const today = format(new Date(), "yyyy-MM-dd");
@@ -108,5 +108,13 @@ export default function NewWorkoutPage() {
         </form>
       </main>
     </div>
+  );
+}
+
+export default function NewWorkoutPage() {
+  return (
+    <Suspense>
+      <NewWorkoutForm />
+    </Suspense>
   );
 }

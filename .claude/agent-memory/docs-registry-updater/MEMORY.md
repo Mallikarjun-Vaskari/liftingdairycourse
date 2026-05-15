@@ -1,0 +1,1 @@
+- [Docs Registry State](project_docs_registry.md) — format and current list of Coding Standards entries in CLAUDE.md
